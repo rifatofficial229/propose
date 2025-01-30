@@ -1,34 +1,32 @@
-const parentElement = document.getElementById("parentElement");
-const showMassage = document.getElementById("showMassage");
-const changeColor = document.body.style;
+function acceptProposal() {
+    // Hide Proposal Box
+    document.getElementById("proposalBox").style.display = "none";
+    
+    // Show Love Message
+    document.getElementById("loveMessage").classList.remove("hidden");
 
-propose = () => {
-  parentElement.style.display = "none";
-  showMessage.style.display = "block";
-  changeColor.background =
-    "linear-gradient(116.82deg, #ff94e7 0%, #27cbff 100%)";
-};
+    // Fire Confetti Celebration
+    fireConfetti();
+}
 
-// Animate Text with Anim JS
-var textWrapper = document.querySelector(".ml6 .letters");
-textWrapper.innerHTML = textWrapper.textContent.replace(
-  /\S/g,
-  "<span class='letter'>$&</span>"
-);
+// Confetti Effect
+function fireConfetti() {
+    var duration = 3 * 1000;
+    var animationEnd = Date.now() + duration;
+    var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 999 };
 
-anime
-  .timeline({ loop: true })
-  .add({
-    targets: ".ml6 .letter",
-    translateY: ["1.1em", 0],
-    translateZ: 0,
-    duration: 750,
-    delay: (el, i) => 50 * i,
-  })
-  .add({
-    targets: ".ml6",
-    opacity: 0,
-    duration: 1000,
-    easing: "easeOutExpo",
-    delay: 1000,
-  });
+    function randomInRange(min, max) {
+        return Math.random() * (max - min) + min;
+    }
+
+    var interval = setInterval(function() {
+        var timeLeft = animationEnd - Date.now();
+
+        if (timeLeft <= 0) {
+            return clearInterval(interval);
+        }
+
+        var particleCount = 50 * (timeLeft / duration);
+        confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.9), y: Math.random() - 0.2 } }));
+    }, 250);
+}
